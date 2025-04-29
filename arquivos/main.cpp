@@ -28,9 +28,9 @@ string printData();
 // vetores
 vector<cliente> listaClientes;
 vector<string> diretorioClientes;
-// item, adicionarIngrediente, removerIngrediente, valor
+// ⮮⮮ item, adicionarIngrediente, removerIngrediente, valor ⮯⮯
 vector<tuple<string, string, string, float>> itensPedido;
-vector<string> listaPedidos;
+vector<cliente> listaPedidos;
 /////////////////////////////
 
 int main()
@@ -98,7 +98,6 @@ int main()
                 {
                     limpatela();
                     cout << "Pedido foi feito com sucesso!" << endl;
-                    system(("notepad-plus-plus \"../clientes/" + nomeCliente + "\"").c_str());
                 }
             }
 
@@ -273,8 +272,10 @@ bool fazerPedido(string telefone)
         itensPedido.push_back(make_tuple(item, adicionarIngrediente, retirarIngrediente, valorItem));
 
         cout << endl
-             << "Você deseja adicionar mais item ao pedido? (s/n):";
+             << "Você deseja adicionar mais item ao pedido? (s/n): ";
         getline(cin, adicionarItem);
+
+        limpatela();
     }
 
     valorPedido = get<3>(itensPedido[0]);
@@ -297,7 +298,7 @@ bool fazerPedido(string telefone)
         filePedido << "Data: " << printData() << endl
                    << endl
                    << "Nome: " << nomePedido << endl
-                   << "Telefone" << telefonePedido
+                   << "Telefone: " << telefonePedido << endl
                    << "Bairro: " << get<0>(enderecoPedido) << endl
                    << "Rua: " << get<1>(enderecoPedido) << endl
                    << "Numero: " << get<2>(enderecoPedido) << endl
@@ -314,11 +315,12 @@ bool fazerPedido(string telefone)
         }
 
         filePedido << endl
-                   << endl
                    << "Valor do pedido: R$ " << valorPedido << endl
                    << "Valor da entrega: R$ " << valorEntrega << endl
                    << "Valor total: R$ " << valorTotal << endl;
     }
+
+    listaPedidos.push_back(cliente(nomePedido, telefonePedido, enderecoPedido));
 
     itensPedido.clear(); // esvasia vetor com itens para próximo pedido
     return true;
@@ -326,6 +328,32 @@ bool fazerPedido(string telefone)
 
 void mostrarPedidos()
 {
+
+    if (listaClientes.empty())
+    {
+        cout << "Nenhum pedido foi feito ainda." << endl;
+    }
+    else
+    {
+        cout << "Pedidos feitos: " << endl
+             << endl
+             << "-----------------------------------------" << endl;
+
+        for (size_t i = 0; i < listaPedidos.size(); i++)
+        {
+            cout << "Nome: " << listaPedidos[i].mostraNome() << endl
+                 << "Telefone: " << listaPedidos[i].mostraTelefone() << endl
+                 << "Bairro: " << get<0>(listaPedidos[i].mostraEndereco()) << endl
+                 << "Rua: " << get<1>(listaPedidos[i].mostraEndereco()) << endl
+                 << "Numero: " << get<2>(listaPedidos[i].mostraEndereco()) << endl
+                 << "Complemento: " << get<3>(listaPedidos[i].mostraEndereco()) << endl
+                 << "-----------------------------------------" << endl;
+        }
+
+        cout << endl
+             << "Foram feitos " << listaPedidos.size() << " pedidos" << endl
+             << endl;
+    }
 }
 
 bool cadastrarCliente()
@@ -424,6 +452,7 @@ bool cadastrarCliente()
 
 void fecharPedidos()
 {
+
 }
 
 bool excluirCliente(string delTelefone)
