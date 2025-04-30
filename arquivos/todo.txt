@@ -1,4 +1,0 @@
-// criar classe pedido
-    // ↳ item, adicionais(com/adicionar), ingredientes(sem/ retirar), valorItens, valorEntrega, valorTotal
-// criar vetor listaPedidos do tipo pedido
-// criar função carregar pedidos (arquivo txt) para vetor listaPedidos (*Estilo funcao carregar cliente*)
