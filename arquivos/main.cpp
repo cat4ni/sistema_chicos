@@ -4,6 +4,9 @@
 bool carregarPathClientes(string path, vector<string> &diretorio);
 bool carregarClientes(const vector<string> &diretorio);
 bool carregarDiretoriosEPastas();
+
+void salvarPedido(cliente c, vector<tuple<string, string, string, float>> clientePedido);
+// carregarPedidos();
 /////////////////////////////
 
 /////////////////////////////
@@ -313,18 +316,25 @@ bool fazerPedido(string telefone)
 
     listaPedidos.push_back(make_tuple(cliente(nomePedido, telefonePedido, enderecoPedido), itensPedido));
 
+    salvarPedido(cliente(nomePedido, telefonePedido, enderecoPedido), itensPedido);
+
     itensPedido.clear(); // esvasia vetor com itens para próximo pedido
     return true;
 }
+//                                      ⮮⮮ item,   com,    sem,   valor ⮯⮯
+void salvarPedido(cliente c, vector<tuple<string, string, string, float>> clientePedido)
+{
+    fstream f("listaPedidos.txt", ios::app);
 
+    for (const auto &p : clientePedido)
+    {
+        f << "Telefone: " << c.mostraTelefone() << " Item: " << get<0>(p) << " | Com: " << get<1>(p)
+          << " | Sem: " << get<2>(p) << " | Valor: " << get<3>(p) << endl;
+    }
+    f.close();
+}
 void mostrarPedidos()
 {
-    /*
-    carregar listaPedidos() ao iniciar o programa? no momento só funciona durante a execução.
-    ...
-    qunado fecha um pedido e faz de novo no mesmo cliente, ta sendo criado outro arquivo com mesmo nome
-    e na hora de mostrar na tela, só sai um.
-    */
     if (listaPedidos.empty())
     {
         cout << "Nenhum pedido foi feito ainda." << endl;
