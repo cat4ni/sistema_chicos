@@ -10,3 +10,21 @@
 // criar função pra ler .txt e armazenar pedido no vetor listaPedido (estilo função carregarClientes)
 
 // fazer funcao fecharPedidos, que apaga vetor listaPedido, atualiza listaTodosPedidos.txt e apaga arquivos .txt individuais dos pedidos (arquivo pra impressão)
+
+
+?melhorar leitura do projeto: 
+sistema/
+├── include/
+│   ├── cliente.hpp
+│   ├── sistema.hpp
+│   ├── arquivos.hpp
+│   ├── gui.hpp
+│   └── util.hpp
+│
+├── src/
+│   ├── main.cpp
+│   ├── cliente.cpp
+│   ├── sistema.cpp
+│   ├── arquivos.cpp
+│   ├── gui.cpp
+│   └── util.cpp
