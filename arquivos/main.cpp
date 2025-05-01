@@ -1,5 +1,4 @@
 #include "cliente.hpp"
-
 /////////////////////////////
 // funcoes operacoes arquivos
 bool carregarPathClientes(string path, vector<string> &diretorio);
@@ -30,7 +29,8 @@ vector<cliente> listaClientes;
 vector<string> diretorioClientes;
 // ⮮⮮ item, adicionarIngrediente, removerIngrediente, valor ⮯⮯
 vector<tuple<string, string, string, float>> itensPedido;
-vector<cliente> listaPedidos;
+// vector de vector 👍👍
+vector<tuple<cliente, vector<tuple<string, string, string, float>>>> listaPedidos;
 /////////////////////////////
 
 int main()
@@ -78,7 +78,7 @@ int main()
                     cin.get();
                     cout << endl;
 
-                    if (cadastrarCliente() == true)
+                    if (cadastrarCliente())
                     {
                         cout << "Cadastro realizado com sucesso!" << endl;
                     }
@@ -101,24 +101,22 @@ int main()
                 }
             }
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
             break;
 
         case 2: // mostrar pedidos
             limpatela();
-            cout << "teste 2";
+            mostrarPedidos();
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
             break;
 
         case 3: // cadastrar cliente
             limpatela();
 
-            if (cadastrarCliente() == true)
+            if (cadastrarCliente())
             {
                 cout << "Cadastro realizado com sucesso!" << endl;
             }
@@ -127,8 +125,7 @@ int main()
                 cout << "O cadastro nao foi completado!" << endl;
             }
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
             break;
 
@@ -137,8 +134,7 @@ int main()
 
             cout << listaClientes[0].mostraTelefone();
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
             break;
 
@@ -147,8 +143,7 @@ int main()
 
             mostrarClientesCadastrados();
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
             break;
 
@@ -186,8 +181,7 @@ int main()
 
                 if (excluirCliente(telefoneDel) == true)
                 {
-                    cout << endl
-                         << "Cliente excluido com sucesso!" << endl;
+                    cout << endl << "Cliente excluido com sucesso!" << endl;
                 }
                 else
                 {
@@ -195,8 +189,7 @@ int main()
                 }
             }
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
             break;
 
@@ -264,15 +257,13 @@ bool fazerPedido(string telefone)
         getline(cin, adicionarIngrediente);
         cout << "Sem: ";
         getline(cin, retirarIngrediente);
-        cout << "-------------------------------------" << endl
-             << "Valor do item: R$ ";
+        cout << "-------------------------------------" << endl << "Valor do item: R$ ";
         cin >> valorItem;
         cin.ignore();
 
         itensPedido.push_back(make_tuple(item, adicionarIngrediente, retirarIngrediente, valorItem));
 
-        cout << endl
-             << "Você deseja adicionar mais item ao pedido? (s/n): ";
+        cout << endl << "Você deseja adicionar mais item ao pedido? (s/n): ";
         getline(cin, adicionarItem);
 
         limpatela();
@@ -320,7 +311,7 @@ bool fazerPedido(string telefone)
                    << "Valor total: R$ " << valorTotal << endl;
     }
 
-    listaPedidos.push_back(cliente(nomePedido, telefonePedido, enderecoPedido));
+    listaPedidos.push_back(make_tuple(cliente(nomePedido, telefonePedido, enderecoPedido), itensPedido));
 
     itensPedido.clear(); // esvasia vetor com itens para próximo pedido
     return true;
@@ -328,30 +319,54 @@ bool fazerPedido(string telefone)
 
 void mostrarPedidos()
 {
-
-    if (listaClientes.empty())
+    /*
+    carregar listaPedidos() ao iniciar o programa? no momento só funciona durante a execução.
+    ...
+    qunado fecha um pedido e faz de novo no mesmo cliente, ta sendo criado outro arquivo com mesmo nome
+    e na hora de mostrar na tela, só sai um.
+    */
+    if (listaPedidos.empty())
     {
         cout << "Nenhum pedido foi feito ainda." << endl;
     }
     else
     {
-        cout << "Pedidos feitos: " << endl
-             << endl
-             << "-----------------------------------------" << endl;
+        cout << "Pedidos feitos: " << endl << endl << "-----------------------------------------" << endl;
 
         for (size_t i = 0; i < listaPedidos.size(); i++)
         {
-            cout << "Nome: " << listaPedidos[i].mostraNome() << endl
-                 << "Telefone: " << listaPedidos[i].mostraTelefone() << endl
-                 << "Bairro: " << get<0>(listaPedidos[i].mostraEndereco()) << endl
-                 << "Rua: " << get<1>(listaPedidos[i].mostraEndereco()) << endl
-                 << "Numero: " << get<2>(listaPedidos[i].mostraEndereco()) << endl
-                 << "Complemento: " << get<3>(listaPedidos[i].mostraEndereco()) << endl
+
+            cliente cliente = get<0>(listaPedidos[i]);
+            vector<tuple<string, string, string, float>> pedidosDoCliente = get<1>(listaPedidos[i]);
+
+            cout << "Nome: " << cliente.mostraNome() << endl
+                 << "Telefone: " << cliente.mostraTelefone() << endl
+                 << "Bairro: " << get<0>(cliente.mostraEndereco()) << endl
+                 << "Rua: " << get<1>(cliente.mostraEndereco()) << endl
+                 << "Numero: " << get<2>(cliente.mostraEndereco()) << endl
+                 << "Complemento: " << get<3>(cliente.mostraEndereco()) << endl
                  << "-----------------------------------------" << endl;
+
+            for (const auto &pedido : pedidosDoCliente)
+            {
+                cout << "Item: " << get<0>(pedido) << endl
+                     << "Com: " << get<1>(pedido) << endl
+                     << "Sem: " << get<2>(pedido) << endl
+                     << "Valor: R$ " << get<3>(pedido) << endl
+                     << "-----------------------------------------" << endl;
+            }
+
+            cout << endl;
         }
 
-        cout << endl
-             << "Foram feitos " << listaPedidos.size() << " pedidos" << endl
+        size_t totalItens = 0;
+
+        for (const auto &pedido : listaPedidos)
+        {
+            totalItens += get<1>(pedido).size();
+        }
+
+        cout << "Foram feitos " << listaPedidos.size() << " pedidos com um total de " << totalItens << " itens."
              << endl;
     }
 }
@@ -380,11 +395,11 @@ bool cadastrarCliente()
     cout << "Complemento: ";
     getline(cin, tempComplemento);
 
-    if (tempNome.empty() || tempTelefone.empty() || tempBairro.empty() || tempRua.empty() || tempNumero.empty() || tempComplemento.empty())
+    if (tempNome.empty() || tempTelefone.empty() || tempBairro.empty() || tempRua.empty() || tempNumero.empty() ||
+        tempComplemento.empty())
     {
         limpatela();
-        cout << endl
-             << "Algum(ns) dos dados cadastrados esta(ao) invalido(s)";
+        cout << endl << "Algum(ns) dos dados cadastrados esta(ao) invalido(s)";
         return false;
     }
 
@@ -402,8 +417,7 @@ bool cadastrarCliente()
          << "Complemento: " << get<3>(tempEndereco) << endl;
 
     string confirma;
-    cout << endl
-         << "Confirmar cadastro? (s/n): ";
+    cout << endl << "Confirmar cadastro? (s/n): ";
     getline(cin, confirma);
 
     if (confirma == "n")
@@ -438,11 +452,8 @@ bool cadastrarCliente()
     ofstream fileLista("listatodosclientes.txt", ios::app);
     if (fileLista.is_open())
     {
-        fileLista << "Nome: " << tempNome
-                  << " | Telefone: " << tempTelefone
-                  << " | Bairro: " << get<0>(tempEndereco)
-                  << " | Rua: " << get<1>(tempEndereco)
-                  << " | Numero: " << get<2>(tempEndereco)
+        fileLista << "Nome: " << tempNome << " | Telefone: " << tempTelefone << " | Bairro: " << get<0>(tempEndereco)
+                  << " | Rua: " << get<1>(tempEndereco) << " | Numero: " << get<2>(tempEndereco)
                   << " | Complemento: " << get<3>(tempEndereco) << endl;
     }
     fileLista.close();
@@ -452,7 +463,6 @@ bool cadastrarCliente()
 
 void fecharPedidos()
 {
-
 }
 
 bool excluirCliente(string delTelefone)
@@ -515,9 +525,7 @@ void mostrarClientesCadastrados()
                  << "-----------------------------------------" << endl;
         }
 
-        cout << endl
-             << "Existem " << listaClientes.size() << " clientes cadastrados" << endl
-             << endl;
+        cout << endl << "Existem " << listaClientes.size() << " clientes cadastrados" << endl << endl;
     }
 }
 
@@ -559,7 +567,8 @@ bool carregarClientes(const vector<string> &diretorio)
         string tempNum = linha.substr(posNum + 8, posComp - posNum - 10);
         string tempComp = linha.substr(posComp + 13);
 
-        listaClientes.push_back(cliente(tempNome, tempTelefone, tuple<string, string, string, string>(tempBairro, tempRua, tempNum, tempComp)));
+        listaClientes.push_back(cliente(tempNome, tempTelefone,
+                                        tuple<string, string, string, string>(tempBairro, tempRua, tempNum, tempComp)));
     }
 
     return true;
