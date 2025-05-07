@@ -1,25 +1,6 @@
-// fazer vetor listaPedido
-    // armazenar: itens (precisa ter um jeito de ter vários itens (????????)) (talvez adicionar um atributo na classe cliente e ligar um destructor quando encerrar pedido) 
-                  adicionais(com), 
-                  ingredientes(sem), 
-                  valor do item, 
-                  valor do pedido (soma do valor dos itens), 
-                  valor total (valor pedido + valor entrega)
-
-// armazenar pedidos em um .txt (além do arquivo pra impressão (pedido-00_cliente-'nomecliente') ) estilo listaClientes.txt
 // criar função pra ler .txt e armazenar pedido no vetor listaPedido (estilo função carregarClientes)
 
 // fazer funcao fecharPedidos, que apaga vetor listaPedido, atualiza listaTodosPedidos.txt e apaga arquivos .txt individuais dos pedidos (arquivo pra impressão)
-
-
-
-1. ✅ mostrarPedidos()
-    :: ❌talvez tenha um bug... nao lembro como replica
-
-2. ✅ salvarPedidos()
-    :: chamado quando algum pedido é feito
-    :: ❌faltou só o valor da entrega
- 
 
 3. ?melhorar leitura do projeto: 
         sistema/
@@ -38,4 +19,8 @@
         │   ├── gui.cpp
         │   └── util.cpp
 
-4. ao inves de pedir qual item a ser adicionado criar um segundo menu com todas as opçoes?
+4. ao inves de pedir qual item a ser adicionado criar um segundo menu com todas as opçoes?  // funcao cardápio mais pra frente
+
+// fazer funcao editar cadastro
+
+// fazer funcao editar pedido
