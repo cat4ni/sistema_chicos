@@ -12,6 +12,7 @@ void salvarPedido(cliente c, vector<tuple<string, string, string, float>> client
 /////////////////////////////
 // funcoes operacoes sistema
 bool fazerPedido(string telefone);
+void fecharpedidos(); // aaaaaaaa
 void mostrarPedidos();
 bool cadastrarCliente();
 void fecharPedidos();
@@ -138,7 +139,9 @@ int main()
         case 4: // fechar caixa
             limpatela();
 
-            cout << listaClientes[0].mostraTelefone();
+            fecharpedidos();
+
+            limpatela();
 
             cout << endl
                  << "Pressione enter para voltar ao menu...";
@@ -211,6 +214,32 @@ int main()
         }
 
     } while (opcaoMenu != 0);
+}
+
+void fecharpedidos()
+{
+    size_t opc;
+
+    cout << "1. Exluir todos os pedidos" << endl;
+    cout << "2. Exluir pedido individual" << endl;
+    cout << "3. Voltar" << endl;
+
+    cin >> opc;
+    cin.ignore();
+
+    if (opc == 1)
+    {
+        fs::remove_all("../pedidos/");
+        cout << "Pasta removida" << endl;
+    }
+    if (opc == 2)
+    {
+        limpatela();
+        mostrarPedidos();
+        size_t index;
+        cout << "Qual pedido excluir?" << endl << "::";
+        cin >> index;
+    }
 }
 
 bool fazerPedido(string telefone)
