@@ -298,20 +298,20 @@ bool fazerPedido(string telefone)
                    << "Numero: " << get<2>(enderecoPedido) << endl
                    << "Complemento: " << get<3>(enderecoPedido) << endl
                    << endl
-                   << "-------------------------------------------------" << endl;
+                   << "-----------------------------------" << endl;
 
         for (size_t i = 0; i < itensPedido.size(); i++)
         {
-            filePedido << get<0>(itensPedido[i]) << "           R$" << get<3>(itensPedido[i]) << endl
-                       << "Com: " << get<1>(itensPedido[i]) << endl
-                       << "Sem: " << get<2>(itensPedido[i]) << endl
-                       << "-------------------------------------------------" << endl;
+            filePedido << get<0>(itensPedido[i]) << "                      R$" << get<3>(itensPedido[i]) << endl
+                       << "Com: " << setprecision(2) << get<1>(itensPedido[i]) << endl
+                       << "Sem: " << setprecision(2) << get<2>(itensPedido[i]) << endl
+                       << "-----------------------------------" << endl;
         }
 
         filePedido << endl
-                   << "Valor do pedido: R$ " << valorPedido << endl
-                   << "Valor da entrega: R$ " << valorEntrega << endl
-                   << "Valor total: R$ " << valorTotal << endl;
+                   << "Valor do pedido: R$ " << setprecision(2) << valorPedido << endl
+                   << "Valor da entrega: R$ " << setprecision(2) << valorEntrega << endl
+                   << "Valor total: R$ " << setprecision(2) << valorTotal << endl;
     }
 
     listaPedidos.push_back(make_tuple(cliente(nomePedido, telefonePedido, enderecoPedido), itensPedido));
