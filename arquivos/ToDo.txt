@@ -19,6 +19,7 @@
 2. ✅ salvarPedidos()
     :: chamado quando algum pedido é feito
     :: ❌faltou só o valor da entrega
+    criar só uma linha no listaPedidos()
  
 
 3. ?melhorar leitura do projeto: 
