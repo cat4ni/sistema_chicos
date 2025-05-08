@@ -1,6 +1,4 @@
-// criar função pra ler .txt e armazenar pedido no vetor listaPedido (estilo função carregarClientes)
-
-// fazer funcao fecharPedidos, que apaga vetor listaPedido, atualiza listaTodosPedidos.txt e apaga arquivos .txt individuais dos pedidos (arquivo pra impressão)
+// arrumar funcao carregarPedidos e carregarPathPedidos e ver se precisa das duas
 
 3. ?melhorar leitura do projeto: 
         sistema/
