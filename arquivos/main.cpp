@@ -432,6 +432,10 @@ bool fazerPedido(string telefone)
     salvarPedido(cliente(nomePedido, telefonePedido, enderecoPedido), itensPedido, valorEntrega, valorTotal);
 
     itensPedido.clear(); // esvasia vetor com itens para próximo pedido
+
+    string comando = "print /D:DR700 " + arquivoPedido;
+    system(comando.c_str());
+
     return true;
 }
 
