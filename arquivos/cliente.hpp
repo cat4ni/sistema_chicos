@@ -1,3 +1,6 @@
+#ifndef CLIENTE_HPP
+#define CLIENTE_HPP
+
 #include <cstdio>
 #include <ctime>
 #include <filesystem>
@@ -16,7 +19,7 @@ class cliente
 {
 private:
     string c_nome, c_telefone;
-    // ⮮⮮ endereco = bairro, rua, telefone, complemento ⮯⮯
+    // ⮮⮮ bairro  rua    telefone complemento ⮯⮯
     tuple<string, string, string, string> c_endereco;
 
 public:
@@ -30,3 +33,5 @@ public:
     string mostraTelefone();
     tuple<string, string, string, string> mostraEndereco();
 };
+
+#endif

@@ -1,5 +1,3 @@
-// arrumar funcao carregarPedidos e carregarPathPedidos e ver se precisa das duas
-
 3. ?melhorar leitura do projeto: 
         sistema/
         ├── include/
@@ -17,11 +15,8 @@
         │   ├── gui.cpp
         │   └── util.cpp
 
-4. ao inves de pedir qual item a ser adicionado criar um segundo menu com todas as opçoes?  // funcao cardápio mais pra frente
+4. ao inves de pedir qual item a ser adicionado criar um segundo menu com todas as opçoes?  // classe itens mais pra frente
 
 // fazer funcao editar cadastro
 
 // fazer funcao editar pedido
-
-
-*dei push no executavel pra testar amanha no chicos*
