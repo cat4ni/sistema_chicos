@@ -403,7 +403,7 @@ bool fazerPedido(string telefone)
         filePedido << endl
                    << "Valor do pedido: R$ " << fixed << setprecision(2) << valorPedido << endl
                    << "Valor da entrega: R$ " << fixed << setprecision(2) << valorEntrega << endl
-                   << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl << endl;
+                   << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl << endl << "." << endl;
     }
     filePedido.close();
 
@@ -680,6 +680,30 @@ void excluirPedido()
         string nomeArquivoPedido = listaClientes[id].mostraNome() + ".txt";
 
         remove(("../pedidos/" + nomeArquivoPedido).c_str());
+
+        listaPedidos.erase(listaPedidos.begin() + id);
+
+            ofstream fileExclui("listaClientes.txt");
+
+            if (fileExclui.is_open())
+            {
+                for (auto &c : listaPedidos)
+                {
+                    fileExclui << "Nome: " << get<0>(c).mostraNome() << " | Telefone: " << get<0>(c).mostraTelefone();
+
+                    for (auto &itens : get<1>(listaPedidos[id]))
+                    {
+                            fileExclui << " | Item: " << get<0>(itens)
+                                    << " | Com: " << get<1>(itens)
+                                    << " | Sem: " << get<2>(itens)
+                                    << " | Valor item: " << fixed << setprecision(2) << get<3>(itens)
+                                    << endl;
+                    }
+                    fileExclui << " | Taxa de entrega: R$ " << fixed << setprecision(2) << get<3>(c)
+                               << fixed << setprecision(2) << " | Valor total: R$ " << get<4>(c) << endl;
+                }
+            }
+            fileExclui.close();
     }
         cout << "Pressione enter para voltar ao menu...";
         cin.get();
@@ -998,7 +1022,7 @@ int menu()
         cout << "1. Fazer Pedido" << endl;
         cout << "2. Mostrar Pedidos" << endl;
         cout << "3. Cadastrar Cliente" << endl;
-        cout << "4. Fechar Pedidos" << endl;
+        cout << "4. Excluir Pedidos" << endl;
         cout << "5. Mostrar Clientes" << endl;
         cout << "6. Excluir Cliente" << endl;
         cout << "0. Fechar Sistema" << endl;
