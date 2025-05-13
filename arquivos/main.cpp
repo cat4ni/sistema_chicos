@@ -403,18 +403,18 @@ bool fazerPedido(string telefone)
         filePedido << endl
                    << "Valor do pedido: R$ " << fixed << setprecision(2) << valorPedido << endl
                    << "Valor da entrega: R$ " << fixed << setprecision(2) << valorEntrega << endl
-                   << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl;
+                   << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl << endl;
     }
     filePedido.close();
 
-    // imprime na impressora padrao
+/*    // imprime na impressora padrao
 #ifdef _WIN32
     string comando = "notepad /p \"" + caminhoArquivo + "\"";
 #else
     string comando = "lp \"" + caminhoArquivo + "\"";
-#endif
+#endi
 
-    system(comando.c_str());
+    system(comando.c_str());*/
 
     listaPedidos.push_back(make_tuple(cliente(nomePedido, telefonePedido, enderecoPedido), itensPedido, valorEntrega, valorTotal));
 
