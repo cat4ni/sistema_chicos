@@ -716,6 +716,18 @@ bool cadastrarCliente(tuple<string, string, tuple<string, string, string, string
         }
     }
 
+    listaClientes.clear(); // limpa a lista atual
+
+    vector<string> linhas;
+    ifstream file("listaClientes.txt");
+    string linha;
+    while (getline(file, linha))
+    {
+        linhas.push_back(linha);
+    }
+    file.close();
+
+    carregarClientes(linhas); // chama sua função
     return true;
 }
 
