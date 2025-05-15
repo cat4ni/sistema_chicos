@@ -348,7 +348,7 @@ bool fazerPedido(string telefone)
         getline(cin, adicionarIngrediente);
         cout << "Sem: ";
         getline(cin, retirarIngrediente);
-        cout << "-------------------------------------" << endl
+        cout << "-----------------------------------------" << endl
              << "Valor do item: R$ ";
         cin >> valorItem;
         cin.ignore();
@@ -381,7 +381,9 @@ bool fazerPedido(string telefone)
     ofstream filePedido(caminhoArquivo);
     if (filePedido.is_open())
     {
-        filePedido << "Data: " << printData() << endl
+       for (size_t i = 0; i < 2; i++)
+       {
+         filePedido << "Data: " << printData() << endl
                    << endl
                    << "Nome: " << nomePedido << endl
                    << "Telefone: " << telefonePedido << endl
@@ -389,7 +391,6 @@ bool fazerPedido(string telefone)
                    << "Rua: " << get<1>(enderecoPedido) << endl
                    << "Numero: " << get<2>(enderecoPedido) << endl
                    << "Complemento: " << get<3>(enderecoPedido) << endl
-                   << endl
                    << "-----------------------------------" << endl;
 
         for (size_t i = 0; i < itensPedido.size(); i++)
@@ -400,10 +401,10 @@ bool fazerPedido(string telefone)
                        << "-----------------------------------" << endl;
         }
 
-        filePedido << endl
-                   << "Valor do pedido: R$ " << fixed << setprecision(2) << valorPedido << endl
+        filePedido << "Valor do pedido: R$ " << fixed << setprecision(2) << valorPedido << endl
                    << "Valor da entrega: R$ " << fixed << setprecision(2) << valorEntrega << endl
-                   << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl << endl << "." << endl;
+                   << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl << endl << endl << endl;
+       }
     }
     filePedido.close();
 
@@ -664,10 +665,10 @@ void excluirPedido()
 
     case 2:
     {
-        limpatela();
-
+    limpatela();
+    
         mostrarPedidos();
-
+        
         if (!listaPedidos.size() > 0)
         {
             break;
@@ -676,7 +677,8 @@ void excluirPedido()
         cout << "Insira o numero do pedido a ser excluido: ";
         size_t id;
         cin >> id;
-
+        cin.ignore();
+        
         string nomeArquivoPedido = listaClientes[id].mostraNome() + ".txt";
 
         remove(("../pedidos/" + nomeArquivoPedido).c_str());
@@ -699,14 +701,12 @@ void excluirPedido()
                                     << " | Valor item: " << fixed << setprecision(2) << get<3>(itens)
                                     << endl;
                     }
-                    fileExclui << " | Taxa de entrega: R$ " << fixed << setprecision(2) << get<3>(c)
-                               << fixed << setprecision(2) << " | Valor total: R$ " << get<4>(c) << endl;
+                    fileExclui << " | Taxa de entrega: R$ " << fixed << setprecision(2) << get<2>(c)
+                               << fixed << setprecision(2) << " | Valor total: R$ " << get<3>(c) << endl;
                 }
             }
             fileExclui.close();
     }
-        cout << "Pressione enter para voltar ao menu...";
-        cin.get();
         break;
 
     case 3:
