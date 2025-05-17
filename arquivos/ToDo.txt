@@ -19,6 +19,7 @@
 
 4. ao inves de pedir qual item a ser adicionado criar um segundo menu com todas as opçoes?  // funcao cardápio mais pra frente
 
-// fazer funcao editar cadastro
-
 // fazer funcao editar pedido
+
+// adicionar confirmação de cadastro antes de editar na funcao editarCliente
+        // sugestao -> separar as duas funçoes, juntas n ficam praticas para trabalhar com multiplos clientes

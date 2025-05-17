@@ -1,26 +1,26 @@
-v. 0.0.1-250428
+v0.0.1-250428
 // adicionadas funções fazerPedido, mostrarPedidos, cadastrarCliente, fecharPedidos, mostrarClientesCadastrados, excluirCliente
 
-v. 0.0.2-250428
+v0.0.2-250428
 // atualizado vetor listaClientes de tipo string para tipo cliente
 // melhorias de texto gerais
 // minor tweaks
 
-v. 0.0.3-250501
+v0.0.3-250501
 // corrigida função mostrarPedidos
 // adicionado vetor lsitaPedidos
 // melhorias de texto gerais
 // problemas de lógicas no texto corrigidas
 // corrigido forma de criar vetor listaPedidos na função fazerPedido
 
-v. 0.0.4-250501
+v0.0.4-250501
 // criado função salvarPedido
 
-v. 0.0.5-250507
+v0.0.5-250507
 // adicionado float valorEntrega, float valorTotal a função salvarPedido
 // funcao fecharPedidos atualizada mas sem funcionar
 
-v. 0.0.6-250508
+v0.1.0-250508
 // funcai fecharPedidos -> excluirPedidos
 // funcao excluirPedidos atualizada e funcionando parcialmente
 // criado prototipo das funcoes carregarPathPedidos e carregarPedidos
@@ -28,18 +28,27 @@ v. 0.0.6-250508
 // melhorias fool-proof em textos de opcoes
 // corrigido bugs nas entradas de texto
 
-v. 0.0.7-250512
+v0.1.1-250512
 // check para opcoes invalidas melhoradas 
 // alguns bugs corrigidos
 
-v. 0.0.7-250513
+v0.1.2-250513
 // atualizada função excluirPedidos
 
-v. 0.0.8-250515
+v0.1.3-250515
 // corrigido erro de código no case 2 do primeiro switch no mostrarClientesCadastrados
 
-v. 1.0.0-250515
+v1.0.0-250515
 // adicionada funcao editarCliente
 
-v. 1.0.1-250515
-// (??) funcao carregarClinetes dentro da funcao cadastrarCliente
+v1.0.1-250515
+// (??) funcao carregarClientes dentro da funcao cadastrarCliente
+
+v1.1.0-250516
+// salvarPedido foi colocada dentor de fazerPedido
+// criada funcao imprimePedido no lugar de salvarPedido
+// criada funcao mostrarPedidoDetalhado que antes tava dentro de mostrarPedidos
+    // para compatibilidade com funcao excluirPedidos
+// funcao excluirPedidos corrigida e funcionando devidamente
+// corrigo formatacao da comanda para impressao
+// ao encerrar sistema, um backup é automaticamente criado salvando informações de pedidos e clientes
