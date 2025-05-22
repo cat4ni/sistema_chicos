@@ -59,6 +59,8 @@ int main()
 
         if (opcaoMenu == 1)
         {
+            menu = menuPedidos();
+
             do
             {
                 menu = menuPedidos();
@@ -284,13 +286,13 @@ int main()
 
             } while (menu != 0);
         }
-        
         if (opcaoMenu == 2)
         {
-            do
-            {
             menu = menuClientes();
 
+            do
+            {
+                menu = menuClientes();
                 switch (menu)
                 {
                 case 1: // cadastrar cliente
@@ -434,7 +436,6 @@ int main()
 
             } while (menu != 0);
         }
-                
         if (opcaoMenu == 0)
         {
             return 0;
