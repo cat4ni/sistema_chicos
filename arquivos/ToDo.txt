@@ -1,5 +1,3 @@
-// arrumar funcao carregarPedidos e carregarPathPedido
-
 3. ?melhorar leitura do projeto: 
         sistema/
         ├── include/

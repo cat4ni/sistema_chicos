@@ -5,14 +5,15 @@
 bool carregarPathClientes(string path, vector<string> &diretorio);
 bool carregarClientes(const vector<string> &diretorio);
 bool carregarDiretoriosEPastas();
-void imprimePedido(cliente c, vector<tuple<string, string, string, float>> clientePedido, float valorPedido, float valorEntrega, float valorTotal);
-// bool carregarPathPedidos(string path, vector<string> &diretorio);
-// bool carregarPedidos(const vector<string> &diretorio);
+bool carregarPathPedidos(string path, vector<string> &diretorio);
+bool carregarPedidos(const vector<string> &diretorio);
 /////////////////////////////
 
 /////////////////////////////
 // funcoes operacoes sistema
 bool fazerPedido(string telefone);
+void imprimePedido(cliente c, vector<tuple<string, string, string, float>> clientePedido, float valorPedido, float valorEntrega, float valorTotal);
+bool reimprimirPedido(int id);
 void fecharpedidos();
 void mostrarPedidos();
 bool cadastrarCliente(tuple<string, string, tuple<string, string, string, string>> *cadastroAtual = nullptr);
@@ -25,7 +26,9 @@ bool excluirCliente(string telefone);
 
 /////////////////////////////
 // funcoes gui
-int menu();
+int menuPrincipal();
+int menuPedidos();
+int menuClientes();
 void limpatela();
 string printData();
 /////////////////////////////
@@ -34,7 +37,7 @@ string printData();
 // vetores
 vector<cliente> listaClientes;
 vector<string> diretorioClientes;
-// vector<string> diretorioPedidos;
+vector<string> diretorioPedidos;
 // ⮮⮮        cliente               item,   com,    sem,    valor ⮯⮯
 vector<tuple<cliente, vector<tuple<string, string, string, float>>, float, float>> listaPedidos;
 /////////////////////////////
@@ -47,350 +50,396 @@ int main()
         return 0;
     }
 
-    int opcaoMenu;
+    size_t opcaoMenu;
+    size_t menu;
 
     do
     {
-        opcaoMenu = menu();
+        opcaoMenu = menuPrincipal();
 
-        switch (opcaoMenu)
+        if (opcaoMenu == 1)
         {
-        case 1: // fazer pedido
-            limpatela();
+            menu = menuPedidos();
+
+            do
             {
-                string opcaoCadastro;
+                menu = menuPedidos();
 
-                cout << "-----------------------------------------" << endl
-                     << "Insira o nome ou telefone do cadastro: ";
-                getline(cin, opcaoCadastro);
-                if (opcaoCadastro.empty())
+                switch (menu)
                 {
-                    cout << "-----------------------------------------" << endl
-                         << "Opcao invalida" << endl
-                         << "Pressione enter para voltar ao menu...";
-                    cin.get();
-                    break;
-                }
-
-                string nomeCliente;
-
-                bool cadastrado = false;
-
-                for (size_t i = 0; i < listaClientes.size(); i++)
-                {
-                    if (listaClientes[i].mostraTelefone() == opcaoCadastro)
-                    {
-                        cadastrado = true;
-                        nomeCliente = listaClientes[i].mostraNome() + ".txt";
-                        opcaoCadastro = listaClientes[i].mostraTelefone();
-                        break;
-                    }
-
-                    if (listaClientes[i].mostraNome() == opcaoCadastro)
-                    {
-                        cadastrado = true;
-                        nomeCliente = listaClientes[i].mostraNome() + ".txt";
-                        opcaoCadastro = listaClientes[i].mostraTelefone();
-                        break;
-                    }
-                }
-
-                if (!cadastrado)
-                {
-                    cout << "-----------------------------------------" << endl
-                         << "Nao foi encontrado nenhum cadastro com este numero" << endl
-                         << "Voce deseja cadastrar este cliente? (s/n): ";
-                    string confirma;
-                    getline(cin, confirma);
-
-                    if (confirma.empty())
-                    {
-                        cout << endl
-                             << "Opcao invalida" << endl
-                             << endl
-                             << "Pressione enter para voltar ao menu...";
-                        cin.get();
-                        break;
-                    }
-
-                    if (confirma == "n")
-                    {
-                        cout << endl
-                             << "Pressione enter para voltar ao menu...";
-                        cin.get();
-                        break;
-                    }
-
-                    if (cadastrarCliente())
-                    {
-                        cout << "-----------------------------------------" << endl
-                             << "Cadastro realizado com sucesso!" << endl;
-                        opcaoCadastro = listaClientes.back().mostraTelefone();
-                    }
-                    else
-                    {
-                        cout << "-----------------------------------------" << endl
-                             << "O cadastro nao foi completado!" << endl;
-                        cout << endl
-                             << "Pressione enter para voltar ao menu...";
-                        cin.get();
-                        break;
-                    }
-                }
-
-                bool clienteExiste = false;
-
-                for (auto &c : listaClientes)
-                {
-                    if (c.mostraTelefone() == opcaoCadastro)
-                    {
-                        clienteExiste = true;
-                        break;
-                    }
-                }
-
-                if (!clienteExiste)
-                {
-                    cout << "Cliente nao encontrado após tentativa de cadastro!" << endl;
-                }
-                else if (!fazerPedido(opcaoCadastro))
-                {
+                case 1: // fazer pedido
                     limpatela();
-                    cout << "O pedido não foi completado!" << endl;
-                }
-                else
-                {
-                    limpatela();
-                    cout << "Pedido foi feito com sucesso!" << endl;
-                }
-            }
-
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
-            cin.get();
-            break;
-
-        case 2: // mostrar pedidos
-            limpatela();
-            if (listaPedidos.empty())
-            {
-                cout << "Nenhum pedido foi feito ainda." << endl;
-            }
-            else
-            {
-                cout << "Pedidos feitos: " << endl
-                     << "-----------------------------------------" << endl;
-
-                mostrarPedidos();
-
-                cout << "Foram feitos " << listaPedidos.size() << " pedidos" << endl
-                     << endl;
-
-                string opcao;
-                cout << "Para saber mais informacoes sobre um pedido insira o id, para voltar ao menu pressione enter" << endl
-                     << "ID: ";
-
-                getline(cin, opcao);
-
-                if (!opcao.empty())
-                {
-                    try
                     {
-                        int id = stoi(opcao);
+                        string opcaoCadastro;
 
-                        if (id >= 0 && id < listaPedidos.size())
+                        cout << "-----------------------------------------" << endl
+                             << "Insira o nome ou telefone do cadastro: ";
+                        getline(cin, opcaoCadastro);
+                        transform(opcaoCadastro.begin(), opcaoCadastro.end(), opcaoCadastro.begin(), ::tolower);
+
+                        if (opcaoCadastro.empty())
                         {
-                            mostrarPedidoDetalhado(id);
+                            cout << "-----------------------------------------" << endl
+                                 << "Opcao invalida" << endl
+                                 << "Pressione enter para voltar ao menu...";
+                            cin.get();
+                            break;
+                        }
+
+                        string nomeCliente;
+
+                        bool cadastrado = false;
+
+                        for (size_t i = 0; i < listaClientes.size(); i++)
+                        {
+                            if (listaClientes[i].mostraTelefone() == opcaoCadastro)
+                            {
+                                cadastrado = true;
+                                nomeCliente = listaClientes[i].mostraNome() + ".txt";
+                                opcaoCadastro = listaClientes[i].mostraTelefone();
+                                break;
+                            }
+
+                            if (listaClientes[i].mostraNome() == opcaoCadastro)
+                            {
+                                cadastrado = true;
+                                nomeCliente = listaClientes[i].mostraNome() + ".txt";
+                                opcaoCadastro = listaClientes[i].mostraTelefone();
+                                break;
+                            }
+                        }
+
+                        if (!cadastrado)
+                        {
+                            cout << "-----------------------------------------" << endl
+                                 << "Nao foi encontrado nenhum cadastro com este numero" << endl
+                                 << "Voce deseja cadastrar este cliente? (s/n): ";
+                            string confirma;
+                            getline(cin, confirma);
+
+                            if (confirma.empty())
+                            {
+                                cout << endl
+                                     << "Opcao invalida" << endl
+                                     << endl
+                                     << "Pressione enter para voltar ao menu...";
+                                cin.get();
+                                break;
+                            }
+
+                            if (confirma == "n")
+                            {
+                                cout << endl
+                                     << "Pressione enter para voltar ao menu...";
+                                cin.get();
+                                break;
+                            }
+
+                            if (cadastrarCliente())
+                            {
+                                cout << "-----------------------------------------" << endl
+                                     << "Cadastro realizado com sucesso!" << endl;
+                                opcaoCadastro = listaClientes.back().mostraTelefone();
+                            }
+                            else
+                            {
+                                cout << "-----------------------------------------" << endl
+                                     << "O cadastro nao foi completado!" << endl;
+                                cout << endl
+                                     << "Pressione enter para voltar ao menu...";
+                                cin.get();
+                                break;
+                            }
+                        }
+
+                        bool clienteExiste = false;
+
+                        for (auto &c : listaClientes)
+                        {
+                            if (c.mostraTelefone() == opcaoCadastro)
+                            {
+                                clienteExiste = true;
+                                break;
+                            }
+                        }
+
+                        if (!clienteExiste)
+                        {
+                            cout << "Cliente nao encontrado após tentativa de cadastro!" << endl;
+                        }
+                        else if (!fazerPedido(opcaoCadastro))
+                        {
+                            limpatela();
+                            cout << "O pedido não foi completado!" << endl;
                         }
                         else
                         {
-                            cout << "Nenhum pedido encontrado com este id. Tente novamente..." << endl;
-                            break;
+                            limpatela();
+                            cout << "Pedido foi feito com sucesso!" << endl;
                         }
                     }
-                    catch (exception &e)
-                    {
-                        cout << "Opcao invalida, tente novamente..." << endl;
-                        break;
-                    }
-                }
-            }
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
-            cin.get();
-            break;
 
-        case 3: // cadastrar cliente
-            if (cadastrarCliente())
-            {
-                cout << "Cadastro realizado com sucesso!" << endl;
-            }
-            else
-            {
-                cout << "O cadastro nao foi completado!" << endl;
-            }
-
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
-            cin.get();
-            break;
-
-        case 4: // excluir pedidos
-            limpatela();
-
-            excluirPedido();
-
-            cout << "Pressione enter para voltar ao menu" << endl;
-            cin.get();
-
-            break;
-
-        case 5: // mostrar clientes
-            limpatela();
-
-            mostrarClientesCadastrados();
-
-            cout << "Pressione enter para voltar ao menu" << endl;
-            cin.get();
-            break;
-
-        case 6: // excluir clientes
-            limpatela();
-            {
-                string clienteDel;
-
-                cout << "Insira o nome ou numero do cliente a ser excluido: ";
-                getline(cin, clienteDel);
-
-                bool cadastrado = false;
-
-                for (size_t i = 0; i < listaClientes.size(); i++)
-                {
-                    if (listaClientes[i].mostraTelefone() == clienteDel || listaClientes[i].mostraNome() == clienteDel)
-                    {
-                        cadastrado = true;
-                        break;
-                    }
-                }
-
-                if (!cadastrado)
-                {
-                    cout << "Cadastro nao encontrado" << endl
+                    cout << endl
                          << "Pressione enter para voltar ao menu...";
                     cin.get();
                     break;
-                }
 
-                for (size_t i = 0; i < listaClientes.size(); i++)
-                {
-                    if (listaClientes[i].mostraTelefone() == clienteDel)
+                case 2: // mostrar pedidos
+                    limpatela();
+                    if (listaPedidos.empty())
                     {
-                        cout << "-----------------------------------------" << endl
-                             << "Nome: " << listaClientes[i].mostraNome() << endl
-                             << "Telefone: " << listaClientes[i].mostraTelefone() << endl
-                             << "Bairro: " << get<0>(listaClientes[i].mostraEndereco()) << endl
-                             << "Rua: " << get<1>(listaClientes[i].mostraEndereco()) << endl
-                             << "Numero: " << get<2>(listaClientes[i].mostraEndereco()) << endl
-                             << "Complemento: " << get<3>(listaClientes[i].mostraEndereco()) << endl
+                        cout << "Nenhum pedido foi feito ainda." << endl;
+                    }
+                    else
+                    {
+                        cout << "Pedidos feitos: " << endl
                              << "-----------------------------------------" << endl;
+
+                        mostrarPedidos();
+
+                        cout << "Foram feitos " << listaPedidos.size() << " pedidos" << endl
+                             << endl;
+
+                        string opcao;
+                        cout << "Para saber mais informacoes sobre um pedido insira o id, para voltar ao menu pressione enter" << endl
+                             << "ID: ";
+
+                        getline(cin, opcao);
+
+                        if (!opcao.empty())
+                        {
+                            try
+                            {
+                                int id = stoi(opcao);
+
+                                if (id >= 0 && id < listaPedidos.size())
+                                {
+                                    mostrarPedidoDetalhado(id);
+                                }
+                                else
+                                {
+                                    cout << "Nenhum pedido encontrado com este id. Tente novamente..." << endl;
+                                    break;
+                                }
+                            }
+                            catch (exception &e)
+                            {
+                                cout << "Opcao invalida, tente novamente..." << endl;
+                                break;
+                            }
+                        }
                     }
-                }
-
-                string confirma;
-                cout << "Excluir cadastro? (s/n): ";
-                getline(cin, confirma);
-
-                if (confirma.empty())
-                {
-                    cout << "Opcao invalida" << endl
-                         << endl
+                    cout << endl
                          << "Pressione enter para voltar ao menu...";
                     cin.get();
                     break;
-                }
 
-                if (confirma == "n")
+                case 3: // reimprimir pedido
                 {
-                    break;
-                }
+                    int id;
 
-                limpatela();
+                    mostrarPedidos();
 
-                if (excluirCliente(clienteDel) == true)
-                {
-                    cout << "Cliente excluido com sucesso!" << endl;
-                }
-            }
+                    cout << "Insira o numero do pedido que deseja imprimir: ";
+                    cin >> id;
+                    cin.ignore();
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
-            cin.get();
-            break;
+                    mostrarPedidoDetalhado(id);
 
-        case 7: // editar cliente
-            limpatela();
-            {
-                string clienteEditar;
+                    cout << endl
+                         << "Voce deseja imprimir este pedido? (s/n): ";
+                    string confirma;
+                    getline(cin, confirma);
 
-                cout << "Número ou nome do cliente para editar: ";
-                getline(cin, clienteEditar);
-
-                bool cadastrado = false;
-
-                tuple<string, string, tuple<string, string, string, string>> cadastroAtual;
-
-                for (size_t i = 0; i < listaClientes.size(); i++)
-                {
-                    if (listaClientes[i].mostraTelefone() == clienteEditar || listaClientes[i].mostraNome() == clienteEditar)
+                    if (confirma == "s")
                     {
-                        get<0>(cadastroAtual) = listaClientes[i].mostraNome();
-                        get<1>(cadastroAtual) = listaClientes[i].mostraTelefone();
-                        get<2>(cadastroAtual) = listaClientes[i].mostraEndereco();
-
-                        cadastrado = true;
-                        break;
+                        if (reimprimirPedido(id))
+                        {
+                            cout << "Imprimindo pedido..." << endl;
+                        }
                     }
-                }
+                    else
+                    {
+                        cout << "Operacao cancelada..." << endl;
+                    }
 
-                if (!cadastrado)
-                {
-                    cout << "Cadastro nao encontrado" << endl
-                         << "Pressione enter para voltar ao menu...";
+                    cout << "Pressione enter para voltar ao menu...";
                     cin.get();
+
                     break;
                 }
 
-                cadastrarCliente(&cadastroAtual);
-            }
-            break;
+                case 4: // excluir pedidos
+                    limpatela();
 
-        case 0: // encerra programa
-            limpatela();
+                    excluirPedido();
 
-            cout << "Criando backup do sistema..." << endl;
+                    cout << "Pressione enter para voltar ao menu" << endl;
+                    cin.get();
 
-            if (!fs::exists("../backups/"))
+                    break;
+
+                case 0:
+                    main();
+                    break;
+                }
+
+            } while (menu != 0);
+        }
+        if (opcaoMenu == 2)
+        {
+            menu = menuClientes();
+
+            do
             {
-                fs::create_directory("../backups");
-                fs::create_directory("../backups/clientes");
-                fs::create_directory("../backups/pedidos");
-                fs::create_directory("../backups/listas");
-            }
+                switch (menu)
+                {
+                case 1: // cadastrar cliente
+                    if (cadastrarCliente())
+                    {
+                        cout << "Cadastro realizado com sucesso!" << endl;
+                    }
+                    else
+                    {
+                        cout << "O cadastro nao foi completado!" << endl;
+                    }
 
-            if (fs::exists("../clientes") || fs::exists("../pedidos"))
-            {
-                fs::copy("../clientes", "../backups/clientes", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
-                fs::copy("../pedidos", "../backups/pedidos", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
-                fs::copy("../arquivos/listaClientes.txt", "../backups/listas", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
-                fs::copy("../arquivos/listaPedidos.txt", "../backups/listas", fs::copy_options::recursive | fs::copy_options::overwrite_existing);
-            }
-            
-            cout << "Backups criados com sucesso..." << endl
+                    cout << endl
+                         << "Pressione enter para voltar ao menu...";
+                    cin.get();
+                    break;
 
-                 << "Encerrando sistema..." << endl;
+                case 2: // mostrar clientes
+                    limpatela();
+
+                    mostrarClientesCadastrados();
+
+                    cout << "Pressione enter para voltar ao menu" << endl;
+                    cin.get();
+                    break;
+
+                case 3: // excluir clientes
+                    limpatela();
+                    {
+                        string clienteDel;
+
+                        cout << "Insira o nome ou numero do cliente a ser excluido: ";
+                        getline(cin, clienteDel);
+
+                        bool cadastrado = false;
+
+                        for (size_t i = 0; i < listaClientes.size(); i++)
+                        {
+                            if (listaClientes[i].mostraTelefone() == clienteDel || listaClientes[i].mostraNome() == clienteDel)
+                            {
+                                cadastrado = true;
+                                break;
+                            }
+                        }
+
+                        if (!cadastrado)
+                        {
+                            cout << "Cadastro nao encontrado" << endl
+                                 << "Pressione enter para voltar ao menu...";
+                            cin.get();
+                            break;
+                        }
+
+                        for (size_t i = 0; i < listaClientes.size(); i++)
+                        {
+                            if (listaClientes[i].mostraTelefone() == clienteDel)
+                            {
+                                cout << "-----------------------------------------" << endl
+                                     << "Nome: " << listaClientes[i].mostraNome() << endl
+                                     << "Telefone: " << listaClientes[i].mostraTelefone() << endl
+                                     << "Bairro: " << get<0>(listaClientes[i].mostraEndereco()) << endl
+                                     << "Rua: " << get<1>(listaClientes[i].mostraEndereco()) << endl
+                                     << "Numero: " << get<2>(listaClientes[i].mostraEndereco()) << endl
+                                     << "Complemento: " << get<3>(listaClientes[i].mostraEndereco()) << endl
+                                     << "-----------------------------------------" << endl;
+                            }
+                        }
+
+                        string confirma;
+                        cout << "Excluir cadastro? (s/n): ";
+                        getline(cin, confirma);
+
+                        if (confirma.empty())
+                        {
+                            cout << "Opcao invalida" << endl
+                                 << endl
+                                 << "Pressione enter para voltar ao menu...";
+                            cin.get();
+                            break;
+                        }
+
+                        if (confirma == "n")
+                        {
+                            break;
+                        }
+
+                        limpatela();
+
+                        if (excluirCliente(clienteDel) == true)
+                        {
+                            cout << "Cliente excluido com sucesso!" << endl;
+                        }
+                    }
+
+                    cout << endl
+                         << "Pressione enter para voltar ao menu...";
+                    cin.get();
+                    break;
+
+                case 4: // editar cliente
+                    limpatela();
+                    {
+                        string clienteEditar;
+
+                        cout << "Número ou nome do cliente para editar: ";
+                        getline(cin, clienteEditar);
+
+                        bool cadastrado = false;
+
+                        tuple<string, string, tuple<string, string, string, string>> cadastroAtual;
+
+                        for (size_t i = 0; i < listaClientes.size(); i++)
+                        {
+                            if (listaClientes[i].mostraTelefone() == clienteEditar || listaClientes[i].mostraNome() == clienteEditar)
+                            {
+                                get<0>(cadastroAtual) = listaClientes[i].mostraNome();
+                                get<1>(cadastroAtual) = listaClientes[i].mostraTelefone();
+                                get<2>(cadastroAtual) = listaClientes[i].mostraEndereco();
+
+                                cadastrado = true;
+                                break;
+                            }
+                        }
+
+                        if (!cadastrado)
+                        {
+                            cout << "Cadastro nao encontrado" << endl
+                                 << "Pressione enter para voltar ao menu...";
+                            cin.get();
+                            break;
+                        }
+
+                        cadastrarCliente(&cadastroAtual);
+                    }
+                    break;
+
+                case 0:
+                    main();
+                    break;
+                }
+
+            } while (menu != 0);
+        }
+        if (opcaoMenu == 0)
+        {
             return 0;
         }
-    } while (opcaoMenu != 0);
+    } while (!opcaoMenu == 0);
 }
 
 bool fazerPedido(string telefone)
@@ -548,14 +597,31 @@ void imprimePedido(cliente c, vector<tuple<string, string, string, float>> clien
     }
     filePedido.close();
 
-    /*// imprime na impressora padrao
-    #ifdef _WIN32
-        string comando = "notepad /p \"" + caminhoArquivo + "\"";
-    #else
-        string comando = "lp \"" + caminhoArquivo + "\"";
-    #endif
+// imprime na impressora padrao
+#ifdef _WIN32
+    string comando = "notepad /p \"" + caminhoArquivo + "\"";
+#else
+    string comando = "lp \"" + caminhoArquivo + "\"";
+#endif
 
-        system(comando.c_str());*/
+    system(comando.c_str());
+}
+
+bool reimprimirPedido(int id)
+{
+    string arquivoPedido = "pedido-" + to_string(id + 1) + "_cliente-" + get<0>(listaPedidos[id]).mostraNome();
+    string caminhoArquivo = "../pedidos/" + arquivoPedido + ".txt";
+
+// imprime na impressora padrao
+#ifdef _WIN32
+    string comando = "notepad /p \"" + caminhoArquivo + "\"";
+#else
+    string comando = "lp \"" + caminhoArquivo + "\"";
+#endif
+
+    system(comando.c_str());
+
+    return true;
 }
 
 void mostrarPedidos()
@@ -744,7 +810,7 @@ bool cadastrarCliente(tuple<string, string, tuple<string, string, string, string
                   << " | Complemento: " << complementoFinal << endl;
         fileLista.close();
     }
-    
+
     return true;
 }
 
@@ -766,8 +832,8 @@ void excluirPedido()
         fs::remove_all("../pedidos/");
         remove("listaPedidos.txt");
         cout << "Pasta removida" << endl;
-        
-        fs:: create_directory("../pedidos/");
+
+        fs::create_directory("../pedidos/");
         return;
 
     case 2:
@@ -968,7 +1034,7 @@ bool carregarClientes(const vector<string> &diretorio)
     return true;
 }
 
-/*bool carregarPathPedidos(string path, vector<string> &diretorio)
+bool carregarPathPedidos(string path, vector<string> &diretorio)
 {
     ifstream fileCarrega(path);
     string linha;
@@ -1005,7 +1071,8 @@ bool carregarPedidos(const vector<string> &diretorio)
         while (true)
         {
             size_t nextItem = linha.find("Item:", pos);
-            if (nextItem == string::npos) break;
+            if (nextItem == string::npos)
+                break;
             pos = nextItem + 6;
 
             size_t barra = linha.find(" | ", pos);
@@ -1013,21 +1080,24 @@ bool carregarPedidos(const vector<string> &diretorio)
             pos = barra + 3;
 
             // Com:
-            if (linha.find("Com:", pos) != pos) break;
+            if (linha.find("Com:", pos) != pos)
+                break;
             pos += 5;
             barra = linha.find(" | ", pos);
             string com = linha.substr(pos, barra - pos);
             pos = barra + 3;
 
             // Sem:
-            if (linha.find("Sem:", pos) != pos) break;
+            if (linha.find("Sem:", pos) != pos)
+                break;
             pos += 5;
             barra = linha.find(" | ", pos);
             string sem = linha.substr(pos, barra - pos);
             pos = barra + 3;
 
             // Valor item:
-            if (linha.find("Valor item:", pos) != pos) break;
+            if (linha.find("Valor item:", pos) != pos)
+                break;
             pos += 13;
             barra = linha.find(" | ", pos);
             string valorStr;
@@ -1069,7 +1139,6 @@ bool carregarPedidos(const vector<string> &diretorio)
 
     return true;
 }
-*/
 
 bool carregarDiretoriosEPastas()
 {
@@ -1096,15 +1165,15 @@ bool carregarDiretoriosEPastas()
     }
 
     // Carregar pedidos
-    /*  if (!carregarPathPedidos("listaPedidos.txt", diretorioPedidos))
-      {
-          fstream("listaPedidos.txt", ios::app).close();
-      }
-      else
-      {
-          carregarPedidos(diretorioPedidos);
-      }
-  */
+    if (!carregarPathPedidos("listaPedidos.txt", diretorioPedidos))
+    {
+        fstream("listaPedidos.txt", ios::app).close();
+    }
+    else
+    {
+        carregarPedidos(diretorioPedidos);
+    }
+
     return true;
 }
 
@@ -1116,7 +1185,7 @@ string printData()
     return string(data);
 }
 
-int menu()
+int menuPedidos()
 {
     limpatela();
 
@@ -1124,35 +1193,94 @@ int menu()
 
     do
     {
-        cout << "------------------------------" << endl;
-        cout << "1. Fazer Pedido" << endl;
-        cout << "2. Mostrar Pedidos" << endl;
-        cout << "3. Cadastrar Cliente" << endl;
-        cout << "4. Excluir Pedidos" << endl;
-        cout << "5. Mostrar Clientes" << endl;
-        cout << "6. Excluir Cliente" << endl;
-        cout << "7. Editar Cliente" << endl;
-        cout << "0. Fechar Sistema" << endl;
-        cout << "------------------------------" << endl;
-        cout << "Escolha uma Opcao: ";
+        cout << "------------------------------" << endl
+             << "1. Fazer Pedido" << endl
+             << "2. Mostrar Pedido" << endl
+             << "3. Reimprimir Pedido" << endl
+             << "4. Cancelar Pedido" << endl
+             << "0. Voltar ao Menu Principal" << endl
+             << "------------------------------" << endl
+             << "Escolha uma opcao: ";
         cin >> op;
+        cin.ignore();
 
         limpatela();
 
-        if (cin.fail() || op > 7)
+        if (cin.fail() || op > 6)
         {
             cout << "Opcao invalida, tente novamente..." << endl;
             cin.clear();
             cin.ignore(numeric_limits<streamsize>::max(), '\n');
             op = -1;
-            cin.get();
-        }
-        else
-        {
-            cin.get();
         }
 
-    } while (op < 0 || op > 7);
+    } while (!op > 4);
+
+    return op;
+}
+
+int menuClientes()
+{
+    limpatela();
+
+    size_t op;
+
+    do
+    {
+        cout << "------------------------------" << endl
+             << "1. Cadastrar Cliente" << endl
+             << "2. Mostrar Clientes " << endl
+             << "3. Editar Cliente" << endl
+             << "4. Excluir Cliente" << endl
+             << "0. Voltar ao Menu Principal" << endl
+             << "------------------------------" << endl
+             << "Escolha uma opcao: ";
+        cin >> op;
+        cin.ignore();
+
+        limpatela();
+
+        if (cin.fail() || op > 6)
+        {
+            cout << "Opcao invalida, tente novamente..." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
+
+    } while (op < 0 || op > 4);
+
+    return op;
+}
+
+int menuPrincipal()
+{
+    limpatela();
+
+    size_t op;
+
+    do
+    {
+        cout << "------------------------------" << endl
+             << "1. Operacoes Pedidos" << endl
+             << "2. Operacoes Clientes" << endl
+             << "0. Fechar Sistema" << endl
+             << "------------------------------" << endl
+             << "Escolha uma Opcao: ";
+        cin >> op;
+        cin.ignore();
+
+        limpatela();
+
+        if (cin.fail() || op > 2)
+        {
+            cout << "Opcao invalida, tente novamente..." << endl;
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            op = -1;
+        }
+
+    } while (op < 0 || op > 2);
 
     return op;
 }

@@ -52,3 +52,9 @@ v1.1.0-250516
 // funcao excluirPedidos corrigida e funcionando devidamente
 // corrigo formatacao da comanda para impressao
 // ao encerrar sistema, um backup é automaticamente criado salvando informações de pedidos e clientes
+
+v1.1.1-250521
+// adiconada funcao reimprimirPedido
+// pedido imprimindo de forma automaticamente
+// funcao carregarPedidos e carregarPathPedido
+// melhorada a pesquisa de clientes
