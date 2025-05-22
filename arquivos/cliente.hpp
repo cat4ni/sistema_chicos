@@ -1,6 +1,8 @@
 #ifndef CLIENTE_HPP
 #define CLIENTE_HPP
 
+#include <algorithm>
+#include <cctype>
 #include <cstdio>
 #include <ctime>
 #include <filesystem>
