@@ -21,4 +21,6 @@
 
 
        
-// tem algum bug com os menus que ta tendo que apertar 2 vezes para fazer as coisas
+// tem algum bug com os menus que ta tendo que apertar 2 vezes para fazer as 
+
+// dividir em mais arquivos 🖐️😭🖐️
