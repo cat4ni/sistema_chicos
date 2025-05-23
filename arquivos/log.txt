@@ -58,3 +58,7 @@ v1.1.1-250521
 // pedido imprimindo de forma automaticamente
 // funcao carregarPedidos e carregarPathPedido
 // melhorada a pesquisa de clientes
+
+v1.1.2-250521
+// separado criarCliente de editarCliente
+

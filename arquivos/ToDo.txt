@@ -19,5 +19,6 @@
 
 // fazer funcao editar pedido
 
-// adicionar confirmação de cadastro antes de editar na funcao editarCliente
-        // sugestao -> separar as duas funçoes, juntas n ficam praticas para trabalhar com multiplos clientes
+
+       
+// tem algum bug com os menus que ta tendo que apertar 2 vezes para fazer as coisas
