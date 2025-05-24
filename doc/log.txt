@@ -59,6 +59,10 @@ v1.1.1-250521
 // funcao carregarPedidos e carregarPathPedido
 // melhorada a pesquisa de clientes
 
-v1.1.2-250521
+v1.1.2-250522
 // separado criarCliente de editarCliente
 
+v2.0.0-250523
+// *arrumei a cagada q tinha feito com o tolower na busca dos cadastros *
+// corrigido bug dos menus que tava tendo que apertar 2 vezes para fazer as operacoes
+// criada pastas para diferentes tipos de arquivos (comando pra compilar -> g++ src/*.cpp -I inc -o bin/sistema, comando pra executar -> ./bin/sistemas)

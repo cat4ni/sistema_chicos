@@ -1,21 +1,11 @@
 #ifndef CLIENTE_HPP
 #define CLIENTE_HPP
 
-#include <algorithm>
-#include <cctype>
-#include <cstdio>
-#include <ctime>
-#include <filesystem>
-#include <fstream>
-#include <iomanip>
 #include <iostream>
-#include <limits>
 #include <string>
 #include <tuple>
-#include <vector>
 
 using namespace std;
-namespace fs = std::filesystem;
 
 class cliente
 {
