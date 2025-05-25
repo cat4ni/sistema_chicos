@@ -1,5 +1,3 @@
 4. ao inves de pedir qual item a ser adicionado criar um segundo menu com todas as opçoes?  // funcao cardápio mais pra frente
 
 // fazer funcao editar pedido
-
-// fazer funcao criarBackup e restaurarBackup

@@ -23,5 +23,7 @@ extern vector<string> diretorioPedidos;
 
 void limpatela();
 string printData();
+bool criarBackup();
+bool restaurarBackup();
 
 #endif

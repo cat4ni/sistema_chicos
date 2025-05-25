@@ -199,6 +199,7 @@ void mostrarPedidos()
 void mostrarPedidoDetalhado(int id)
 {
     limpatela();
+
     cout << "Numero do pedido: " << id << endl
          << "Nome: " << get<0>(listaPedidos[id]).mostraNome() << endl
          << "Telefone: " << get<0>(listaPedidos[id]).mostraTelefone() << endl

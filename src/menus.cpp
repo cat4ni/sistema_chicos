@@ -80,6 +80,8 @@ int menuPrincipal()
         cout << "------------------------------" << endl
              << "1. Operacoes Pedidos" << endl
              << "2. Operacoes Clientes" << endl
+             << "3. Criar cópia dos dados" << endl
+             << "4. Restaurar dados" << endl
              << "0. Fechar Sistema" << endl
              << "------------------------------" << endl
              << "Escolha uma Opcao: ";
@@ -88,7 +90,7 @@ int menuPrincipal()
 
         limpatela();
 
-        if (cin.fail() || op > 2)
+        if (cin.fail() || op > 4)
         {
             cout << "Opcao invalida, tente novamente..." << endl;
             cin.clear();
@@ -96,7 +98,7 @@ int menuPrincipal()
             op = static_cast<size_t>(-1);
         }
 
-    } while (op < 0 || op > 2);
+    } while (op < 0 || op > 4);
 
     return op;
 }

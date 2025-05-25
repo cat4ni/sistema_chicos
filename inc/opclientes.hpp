@@ -6,6 +6,7 @@
 bool cadastrarCliente();
 bool editarCliente(tuple<string, string, tuple<string, string, string, string>> &cadastroAtual);
 void mostrarClientesCadastrados();
+void mostrarClientesDetalhado(int id);
 bool excluirCliente(string telefone);
 
 #endif

@@ -220,7 +220,7 @@ bool excluirCliente(string delCliente)
 {
     for (size_t i = 0; i < listaClientes.size(); i++)
     {
-        if (listaClientes[i].mostraTelefone() == delCliente)
+        if (listaClientes[i].mostraTelefone() == delCliente || listaClientes[i].mostraNome() == delCliente)
         {
             string nomeArquivoCliente = listaClientes[i].mostraNome() + ".txt";
 
@@ -253,61 +253,23 @@ bool excluirCliente(string delCliente)
 
 void mostrarClientesCadastrados()
 {
-    if (listaClientes.empty())
+    for (size_t i = 0; i < listaClientes.size(); i++)
     {
-        cout << "Nenhum cliente cadastrado ainda." << endl;
-    }
-    else
-    {
-        cout << "Clientes cadastrados: " << endl
+        cout << "[" << i << "] Nome: " << listaClientes[i].mostraNome()
+             << ", telefone: " << listaClientes[i].mostraTelefone() << endl
              << "-----------------------------------------" << endl;
-
-        for (size_t i = 0; i < listaClientes.size(); i++)
-        {
-            cout << "[" << i << "] Nome: " << listaClientes[i].mostraNome()
-                 << ", telefone: " << listaClientes[i].mostraTelefone() << endl
-                 << "-----------------------------------------" << endl;
-        }
-
-        cout << "Foram cadastrados " << listaClientes.size() << " clientes" << endl
-             << endl;
-
-        string opcao;
-        cout << "Para saber mais informacoes sobre um cliente insira o id, para voltar ao menu pressione enter" << endl
-             << "ID: ";
-
-        getline(cin, opcao);
-
-        if (!opcao.empty())
-        {
-            try
-            {
-                int id = stoi(opcao);
-
-                if (id >= 0 && id < listaClientes.size())
-                {
-
-                    limpatela();
-                    cout << "-----------------------------------------" << endl
-                         << "Nome: " << listaClientes[id].mostraNome() << endl
-                         << "Telefone: " << listaClientes[id].mostraTelefone() << endl
-                         << "Bairro: " << get<0>(listaClientes[id].mostraEndereco()) << endl
-                         << "Rua: " << get<1>(listaClientes[id].mostraEndereco()) << endl
-                         << "Numero: " << get<2>(listaClientes[id].mostraEndereco()) << endl
-                         << "Complemento: " << get<3>(listaClientes[id].mostraEndereco()) << endl
-                         << "-----------------------------------------" << endl;
-                }
-                else
-                {
-                    cout << "Nenhum pedido encontrado com este id. Tente novamente..." << endl;
-                    return;
-                }
-            }
-            catch (exception &e)
-            {
-                cout << "Opcao invalida, tente novamente..." << endl;
-                return;
-            }
-        }
     }
+}
+
+void mostrarClientesDetalhado(int id)
+{
+    limpatela();
+    cout << "-----------------------------------------" << endl
+         << "Nome: " << listaClientes[id].mostraNome() << endl
+         << "Telefone: " << listaClientes[id].mostraTelefone() << endl
+         << "Bairro: " << get<0>(listaClientes[id].mostraEndereco()) << endl
+         << "Rua: " << get<1>(listaClientes[id].mostraEndereco()) << endl
+         << "Numero: " << get<2>(listaClientes[id].mostraEndereco()) << endl
+         << "Complemento: " << get<3>(listaClientes[id].mostraEndereco()) << endl
+         << "-----------------------------------------" << endl;
 }
