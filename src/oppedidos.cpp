@@ -1,5 +1,5 @@
-#include "cliente.hpp"
 #include "oppedidos.hpp"
+#include "cliente.hpp"
 #include "miscs.hpp"
 
 bool fazerPedido(string telefone)
@@ -36,9 +36,7 @@ bool fazerPedido(string telefone)
 
     if (confirma.empty())
     {
-        cout << "Opcao invalida" << endl
-             << endl
-             << "Pressione enter para voltar ao menu...";
+        cout << "Opcao invalida" << endl << endl << "Pressione enter para voltar ao menu...";
         cin.get();
         return false;
     }
@@ -58,22 +56,19 @@ bool fazerPedido(string telefone)
     while (adicionarItem == "s")
     {
 
-        cout << "-----------------------------------------" << endl
-             << "Insira o item a ser adicionado: ";
+        cout << "-----------------------------------------" << endl << "Insira o item a ser adicionado: ";
         getline(cin, item);
         cout << "Com: ";
         getline(cin, adicionarIngrediente);
         cout << "Sem: ";
         getline(cin, retirarIngrediente);
-        cout << "-----------------------------------------" << endl
-             << "Valor do item: R$ ";
+        cout << "-----------------------------------------" << endl << "Valor do item: R$ ";
         cin >> valorItem;
         cin.ignore();
 
         itensPedido.push_back(make_tuple(item, adicionarIngrediente, retirarIngrediente, valorItem));
 
-        cout << endl
-             << "Você deseja adicionar mais item ao pedido? (s/n): ";
+        cout << endl << "Você deseja adicionar mais item ao pedido? (s/n): ";
         getline(cin, adicionarItem);
 
         limpatela();
@@ -117,7 +112,8 @@ bool fazerPedido(string telefone)
     return true;
 }
 
-void imprimePedido(cliente c, vector<tuple<string, string, string, float>> clientePedido, float valorPedido, float valorEntrega, float valorTotal)
+void imprimePedido(cliente c, vector<tuple<string, string, string, float>> clientePedido, float valorPedido,
+                   float valorEntrega, float valorTotal)
 {
     string arquivoPedido = "pedido-" + to_string(listaPedidos.size()) + "_cliente-" + c.mostraNome();
     string caminhoArquivo = "pedidos/" + arquivoPedido + ".txt";
@@ -151,9 +147,7 @@ void imprimePedido(cliente c, vector<tuple<string, string, string, float>> clien
                        << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl;
             if (i < 1)
             {
-                filePedido << endl
-                           << "." << endl
-                           << endl;
+                filePedido << endl << "." << endl << endl;
             }
         }
     }
@@ -247,8 +241,7 @@ void excluirPedido()
         fs::create_directory("pedidos/");
         return;
 
-    case 2:
-    {
+    case 2: {
         limpatela();
 
         mostrarPedidos();
@@ -303,4 +296,125 @@ void excluirPedido()
     case 3:
         return;
     }
+}
+bool editarPedido(tuple<cliente, vector<tuple<string, string, string, float>>, float, float> &pedido, int id)
+{
+    cliente &c = get<0>(pedido);
+    auto &itens = get<1>(pedido);
+    float &valorEntrega = get<2>(pedido);
+    float &valorTotal = get<3>(pedido);
+
+    float valorPedido = 0.0;
+
+    for (size_t i = 0; i < itens.size(); ++i)
+    {
+        cout << "Editando item [" << i << "]" << endl;
+
+        cout << "Nome: ";
+        string nome;
+        getline(cin, nome);
+
+        cout << "Com: ";
+        string com;
+        getline(cin, com);
+
+        cout << "Sem: ";
+        string sem;
+        getline(cin, sem);
+
+        cout << "Valor: R$ ";
+        float valor;
+        cin >> valor;
+        cin.ignore();
+
+        cout << "Valor da entrega: R$ ";
+        cin >> valorEntrega;
+        cin.ignore();
+
+        itens[i] = make_tuple(nome, com, sem, valor);
+
+        cout << "-----------------------------------------" << endl;
+    }
+
+    for (const auto &item : itens)
+    {
+        valorPedido += get<3>(item);
+    }
+
+    valorTotal = valorPedido + valorEntrega;
+
+    string pos = to_string(id + 1);
+    ofstream filePedido("pedidos/pedido-" + pos + "_cliente-" + c.mostraNome() + ".txt");
+    if (filePedido.is_open())
+    {
+        for (int i = 0; i < 2; ++i)
+        {
+            filePedido << "Data: " << printData() << endl
+                       << "Nome: " << c.mostraNome() << endl
+                       << "Telefone: " << c.mostraTelefone() << endl
+                       << "Bairro: " << get<0>(c.mostraEndereco()) << endl
+                       << "Rua: " << get<1>(c.mostraEndereco()) << endl
+                       << "Numero: " << get<2>(c.mostraEndereco()) << endl
+                       << "Complemento: " << get<3>(c.mostraEndereco()) << endl
+                       << "-----------------------------------" << endl;
+
+            for (const auto &item : itens)
+            {
+                filePedido << get<0>(item) << "                 R$" << fixed << setprecision(2) << get<3>(item) << endl
+                           << "Com: " << get<1>(item) << endl
+                           << "Sem: " << get<2>(item) << endl
+                           << "-----------------------------------" << endl;
+            }
+
+            filePedido << "Valor do pedido: R$ " << fixed << setprecision(2) << valorPedido << endl
+                       << "Valor da entrega: R$ " << fixed << setprecision(2) << valorEntrega << endl
+                       << "Valor total: R$ " << fixed << setprecision(2) << valorTotal << endl;
+
+            if (i < 1)
+            {
+                filePedido << endl << "." << endl << endl;
+            }
+        }
+
+        filePedido.close();
+    }
+
+    vector<string> linhas;
+    ifstream fileIn("listas/listaPedidos.txt");
+    if (fileIn.is_open())
+    {
+        string linha;
+        while (getline(fileIn, linha))
+        {
+            linhas.push_back(linha);
+        }
+        fileIn.close();
+    }
+
+    ostringstream novaLinha;
+    novaLinha << "Nome: " << c.mostraNome() << " | Telefone: " << c.mostraTelefone();
+    for (const auto &item : itens)
+    {
+        novaLinha << " | Item: " << get<0>(item) << " | Com: " << get<1>(item) << " | Sem: " << get<2>(item)
+                  << " | Valor item: " << fixed << setprecision(2) << get<3>(item);
+    }
+    novaLinha << " | Taxa de entrega: " << fixed << setprecision(2) << valorEntrega << " | Valor total: " << fixed
+              << setprecision(2) << valorTotal;
+
+    if (id >= 0 && id < (int)linhas.size())
+    {
+        linhas[id] = novaLinha.str();
+    }
+
+    ofstream listaPedidoFile("listas/listaPedidos.txt");
+    if (listaPedidoFile.is_open())
+    {
+        for (const auto &linha : linhas)
+        {
+            listaPedidoFile << linha << endl;
+        }
+        listaPedidoFile.close();
+    }
+
+    return true;
 }

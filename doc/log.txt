@@ -72,3 +72,7 @@ v2.0.0-250523
 v2.0.1-2505235
 // arrumado bug de n carregar clientes e pedidos
 // criado funcoes para backups
+
+v2.0.2-250530
+// adicionado função editarCliente
+//coloquei chave nos cases pra poder fechar no vscode

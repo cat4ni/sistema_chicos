@@ -18,6 +18,7 @@ bool carregarPedidos(const vector<string> &diretorio);
 vector<cliente> listaClientes;
 vector<string> diretorioClientes;
 vector<string> diretorioPedidos;
+//                         ⮮⮮        item     com     sem    valor    ⮯⮯
 vector<tuple<cliente, vector<tuple<string, string, string, float>>, float, float>> listaPedidos;
 /////////////////////////////
 
@@ -45,6 +46,7 @@ int main()
                 switch (menu)
                 {
                 case 1: // fazer pedido
+                {
                     limpatela();
                     {
                         string opcaoCadastro;
@@ -105,8 +107,7 @@ int main()
 
                             if (confirma != "s")
                             {
-                                cout << endl
-                                     << "Pressione enter para voltar ao menu...";
+                                cout << endl << "Pressione enter para voltar ao menu...";
                                 cin.get();
                                 break;
                             }
@@ -121,8 +122,7 @@ int main()
                             {
                                 cout << "-----------------------------------------" << endl
                                      << "O cadastro nao foi completado!" << endl;
-                                cout << endl
-                                     << "Pressione enter para voltar ao menu...";
+                                cout << endl << "Pressione enter para voltar ao menu...";
                                 cin.get();
                                 break;
                             }
@@ -155,12 +155,12 @@ int main()
                         }
                     }
 
-                    cout << endl
-                         << "Pressione enter para voltar ao menu...";
+                    cout << endl << "Pressione enter para voltar ao menu...";
                     cin.get();
-                    break;
-
+                }
+                break;
                 case 2: // mostrar pedidos
+                {
                     limpatela();
                     if (listaPedidos.empty())
                     {
@@ -168,13 +168,11 @@ int main()
                     }
                     else
                     {
-                        cout << "Pedidos feitos: " << endl
-                             << "-----------------------------------------" << endl;
+                        cout << "Pedidos feitos: " << endl << "-----------------------------------------" << endl;
 
                         mostrarPedidos();
 
-                        cout << "Foram feitos " << listaPedidos.size() << " pedidos" << endl
-                             << endl;
+                        cout << "Foram feitos " << listaPedidos.size() << " pedidos" << endl << endl;
 
                         string opcao;
                         cout << "Para saber mais informacoes sobre um pedido insira o id, para voltar ao menu "
@@ -207,11 +205,10 @@ int main()
                             }
                         }
                     }
-                    cout << endl
-                         << "Pressione enter para voltar ao menu...";
+                    cout << endl << "Pressione enter para voltar ao menu...";
                     cin.get();
-                    break;
-
+                }
+                break;
                 case 3: // reimprimir pedido
                 {
                     int id;
@@ -224,8 +221,7 @@ int main()
 
                     mostrarPedidoDetalhado(id);
 
-                    cout << endl
-                         << "Voce deseja imprimir este pedido? (s/n): ";
+                    cout << endl << "Voce deseja imprimir este pedido? (s/n): ";
                     string confirma;
                     getline(cin, confirma);
 
@@ -243,20 +239,72 @@ int main()
 
                     cout << "Pressione enter para voltar ao menu...";
                     cin.get();
-
-                    break;
                 }
-
+                break;
                 case 4: // excluir pedidos
+                {
                     limpatela();
 
                     excluirPedido();
 
                     cout << "Pressione enter para voltar ao menu" << endl;
                     cin.get();
+                }
+                break;
+
+                case 5: // editar pedido
+                {
+                    limpatela();
+
+                    if (listaPedidos.empty())
+                    {
+                        cout << "Nenhum pedido foi feito ainda." << endl;
+                    }
+                    else
+                    {
+                        cout << "Pedidos feitos:" << endl;
+                        cout << "-----------------------------------------" << endl;
+                        mostrarPedidos();
+                        cout << "Foram feitos " << listaPedidos.size() << " pedidos" << endl << endl;
+
+                        string opcao;
+                        cout << "Digite o ID do pedido para editar ou pressione Enter para voltar: ";
+                        getline(cin, opcao);
+
+                        if (!opcao.empty())
+                        {
+                            try
+                            {
+                                int id = stoi(opcao);
+                                if (id >= 0 && id < listaPedidos.size())
+                                {
+                                    if (editarPedido(listaPedidos[id], id))
+                                    {
+                                        cout << "Pedido editado com sucesso" << endl;
+                                    }
+                                    else
+                                    {
+                                        cout << "Edicao cancelada" << endl;
+                                    }
+                                }
+                                else
+                                {
+                                    cout << "ID invalido" << endl;
+                                }
+                            }
+                            catch (exception &e)
+                            {
+                                cout << "Entrada invalida." << endl;
+                            }
+                        }
+                    }
+
+                    cout << endl << "Pressione Enter para voltar ao menu...";
+                    cin.get();
+                }
+                break;
 
                     break;
-
                 case 0:
                     main();
                     break;
@@ -273,6 +321,7 @@ int main()
                 switch (menu)
                 {
                 case 1: // cadastrar cliente
+                {
                     if (cadastrarCliente())
                     {
                         cout << "Cadastro realizado com sucesso!" << endl;
@@ -282,12 +331,13 @@ int main()
                         cout << "O cadastro nao foi completado!" << endl;
                     }
 
-                    cout << endl
-                         << "Pressione enter para voltar ao menu...";
+                    cout << endl << "Pressione enter para voltar ao menu...";
                     cin.get();
-                    break;
+                }
+                break;
 
                 case 2: // mostrar clientes
+                {
                     limpatela();
 
                     if (listaClientes.empty())
@@ -296,16 +346,16 @@ int main()
                     }
                     else
                     {
-                        cout << "Clientes cadastrados: " << endl
-                             << "-----------------------------------------" << endl;
+                        cout << "Clientes cadastrados: " << endl << "-----------------------------------------" << endl;
 
                         mostrarClientesCadastrados();
 
-                        cout << "Foram cadastrados " << listaClientes.size() << " clientes" << endl
-                             << endl;
+                        cout << "Foram cadastrados " << listaClientes.size() << " clientes" << endl << endl;
 
                         string opcao;
-                        cout << "Para saber mais informacoes sobre um cliente insira o id, para voltar ao menu pressione enter" << endl
+                        cout << "Para saber mais informacoes sobre um cliente insira o id, para voltar ao menu "
+                                "pressione enter"
+                             << endl
                              << "ID: ";
                         getline(cin, opcao);
 
@@ -335,105 +385,105 @@ int main()
 
                     cout << "Pressione enter para voltar ao menu" << endl;
                     cin.get();
-                    break;
+                }
+                break;
 
                 case 3: // excluir clientes
+                {
                     limpatela();
+
+                    string clienteDel;
+
+                    mostrarClientesCadastrados();
+
+                    cout << "Insira o nome ou numero do cliente a ser excluido: ";
+                    getline(cin, clienteDel);
+
+                    bool cadastrado = false;
+                    size_t id;
+
+                    for (id = 0; id < listaClientes.size(); id++)
                     {
-                        string clienteDel;
-
-                        mostrarClientesCadastrados();
-
-                        cout << "Insira o nome ou numero do cliente a ser excluido: ";
-                        getline(cin, clienteDel);
-
-                        bool cadastrado = false;
-                        size_t id;
-
-                        for (id = 0; id < listaClientes.size(); id++)
+                        if (listaClientes[id].mostraTelefone() == clienteDel ||
+                            listaClientes[id].mostraNome() == clienteDel)
                         {
-                            if (listaClientes[id].mostraTelefone() == clienteDel || listaClientes[id].mostraNome() == clienteDel)
-                            {
-                                cadastrado = true;
-                                break;
-                            }
-                        }
-
-                        if (!cadastrado)
-                        {
-                            cout << "Cadastro nao encontrado" << endl
-                                 << "Pressione enter para voltar ao menu...";
-                            cin.get();
+                            cadastrado = true;
                             break;
                         }
+                    }
 
-                        mostrarClientesDetalhado(id);
+                    if (!cadastrado)
+                    {
+                        cout << "Cadastro nao encontrado" << endl << "Pressione enter para voltar ao menu...";
+                        cin.get();
+                        break;
+                    }
 
-                        string confirma;
-                        cout << "Excluir cadastro? (s/n): ";
-                        getline(cin, confirma);
+                    mostrarClientesDetalhado(id);
 
-                        limpatela();
+                    string confirma;
+                    cout << "Excluir cadastro? (s/n): ";
+                    getline(cin, confirma);
 
-                        if (confirma != "s")
+                    limpatela();
+
+                    if (confirma != "s")
+                    {
+                        cout << "Operacao cancelada..." << endl;
+                    }
+                    else
+                    {
+                        if (excluirCliente(clienteDel))
                         {
-                            cout << "Operacao cancelada..." << endl;
+                            cout << "Cliente excluido com sucesso!" << endl;
                         }
                         else
                         {
-                            if (excluirCliente(clienteDel))
-                            {
-                                cout << "Cliente excluido com sucesso!" << endl;
-                            }
-                            else
-                            {
-                                cout << "Algo de errado ocorreu ao tentar excluir o cadastro!" << endl;
-                            }
+                            cout << "Algo de errado ocorreu ao tentar excluir o cadastro!" << endl;
                         }
                     }
-
-                    cout << endl
-                         << "Pressione enter para voltar ao menu...";
+                    cout << endl << "Pressione enter para voltar ao menu...";
                     cin.get();
-                    break;
+                }
+                break;
 
                 case 4: // editar cliente
+                {
                     limpatela();
+
+                    string clienteEditar;
+
+                    cout << "Número ou nome do cliente para editar: ";
+                    getline(cin, clienteEditar);
+
+                    bool cadastrado = false;
+
+                    tuple<string, string, tuple<string, string, string, string>> cadastroAtual;
+
+                    for (size_t i = 0; i < listaClientes.size(); i++)
                     {
-                        string clienteEditar;
-
-                        cout << "Número ou nome do cliente para editar: ";
-                        getline(cin, clienteEditar);
-
-                        bool cadastrado = false;
-
-                        tuple<string, string, tuple<string, string, string, string>> cadastroAtual;
-
-                        for (size_t i = 0; i < listaClientes.size(); i++)
+                        if (listaClientes[i].mostraTelefone() == clienteEditar ||
+                            listaClientes[i].mostraNome() == clienteEditar)
                         {
-                            if (listaClientes[i].mostraTelefone() == clienteEditar ||
-                                listaClientes[i].mostraNome() == clienteEditar)
-                            {
-                                get<0>(cadastroAtual) = listaClientes[i].mostraNome();
-                                get<1>(cadastroAtual) = listaClientes[i].mostraTelefone();
-                                get<2>(cadastroAtual) = listaClientes[i].mostraEndereco();
+                            get<0>(cadastroAtual) = listaClientes[i].mostraNome();
+                            get<1>(cadastroAtual) = listaClientes[i].mostraTelefone();
+                            get<2>(cadastroAtual) = listaClientes[i].mostraEndereco();
 
-                                cadastrado = true;
-                                break;
-                            }
-                        }
-
-                        if (!cadastrado)
-                        {
-                            cout << "Cadastro nao encontrado" << endl
-                                 << "Pressione enter para voltar ao menu...";
-                            cin.get();
+                            cadastrado = true;
                             break;
                         }
-
-                        editarCliente(cadastroAtual);
                     }
-                    break;
+
+                    if (!cadastrado)
+                    {
+                        cout << "Cadastro nao encontrado" << endl << "Pressione enter para voltar ao menu...";
+                        cin.get();
+                        break;
+                    }
+
+                    editarCliente(cadastroAtual);
+                }
+                break;
 
                 case 0:
                     main();
@@ -447,18 +497,15 @@ int main()
         {
             limpatela();
 
-            cout << "Criando backup..." << endl
-                 << endl;
+            cout << "Criando backup..." << endl << endl;
 
             if (!criarBackup())
             {
-                cout << "Algo de errado aconteceu ao tentar cirar o backup..." << endl
-                     << endl;
+                cout << "Algo de errado aconteceu ao tentar cirar o backup..." << endl << endl;
             }
             else
             {
-                cout << "Backup criado com sucesso..." << endl
-                     << endl;
+                cout << "Backup criado com sucesso..." << endl << endl;
             }
 
             cout << "Pressione enter para voltar ao menu...";
@@ -475,29 +522,25 @@ int main()
             getline(cin, confirma);
 
             limpatela();
-            
+
             if (confirma != "s")
             {
                 cout << "Operacao cancelada..." << endl;
             }
             else
             {
-                cout << "Restaurando dados..." << endl
-                     << endl;
+                cout << "Restaurando dados..." << endl << endl;
                 if (!restaurarBackup())
                 {
-                    cout << "Algo de errado aconteceu ao tentar restaurar o backup..." << endl
-                         << endl;
+                    cout << "Algo de errado aconteceu ao tentar restaurar o backup..." << endl << endl;
                 }
                 else
                 {
-                    cout << "Dados restaurados com sucesso..." << endl
-                         << endl;
+                    cout << "Dados restaurados com sucesso..." << endl << endl;
                 }
             }
 
-            cout << endl
-                 << "Pressione enter para voltar ao menu...";
+            cout << endl << "Pressione enter para voltar ao menu...";
             cin.get();
         }
 
@@ -550,7 +593,8 @@ bool carregarClientes(const vector<string> &diretorio)
         string tempNum = linha.substr(posNum + 8, posComp - posNum - 11);
         string tempComp = linha.substr(posComp + 13);
 
-        listaClientes.push_back(cliente(tempNome, tempTelefone, tuple<string, string, string, string>(tempBairro, tempRua, tempNum, tempComp)));
+        listaClientes.push_back(cliente(tempNome, tempTelefone,
+                                        tuple<string, string, string, string>(tempBairro, tempRua, tempNum, tempComp)));
     }
 
     return true;

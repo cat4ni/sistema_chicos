@@ -1,5 +1,5 @@
-#include "cliente.hpp"
 #include "opclientes.hpp"
+#include "cliente.hpp"
 #include "miscs.hpp"
 
 bool cadastrarCliente()
@@ -8,9 +8,7 @@ bool cadastrarCliente()
 
     string tempNome, tempTelefone, tempBairro, tempRua, tempNumero, tempComplemento;
 
-    cout << "-----------------------------------------" << endl
-         << "Insira os dados do cliente: " << endl
-         << "Nome: ";
+    cout << "-----------------------------------------" << endl << "Insira os dados do cliente: " << endl << "Nome: ";
     getline(cin, tempNome);
 
     for (auto &cliente : listaClientes)
@@ -56,8 +54,7 @@ bool cadastrarCliente()
     }
 
     limpatela();
-    cout << "Revisão dos dados: " << endl
-         << endl;
+    cout << "Revisão dos dados: " << endl << endl;
     cout << "Nome: " << tempNome << endl;
     cout << "Telefone: " << tempTelefone << endl;
     cout << "Bairro: " << tempBairro << endl;
@@ -66,8 +63,7 @@ bool cadastrarCliente()
     cout << "Complemento: " << tempComplemento << endl;
 
     string confirma;
-    cout << endl
-         << "Os dados estao corretos? (s/n): ";
+    cout << endl << "Os dados estao corretos? (s/n): ";
     getline(cin, confirma);
 
     if (confirma != "s")
@@ -110,8 +106,7 @@ bool editarCliente(tuple<string, string, tuple<string, string, string, string>> 
 
     string tempNome, tempTelefone, tempBairro, tempRua, tempNumero, tempComplemento;
 
-    cout << "-----------------------------------------" << endl
-         << "Edite as informacoes do cliente: " << endl;
+    cout << "-----------------------------------------" << endl << "Edite as informacoes do cliente: " << endl;
 
     cout << "Nome: ";
     getline(cin, tempNome);
@@ -134,7 +129,6 @@ bool editarCliente(tuple<string, string, tuple<string, string, string, string>> 
     string nomeAntigo = get<0>(cadastroAtual);
     string telefoneAntigo = get<1>(cadastroAtual);
 
-    // Atualiza os campos apenas se não forem vazios
     string nomeFinal = tempNome.empty() ? get<0>(cadastroAtual) : tempNome;
     string telefoneFinal = tempTelefone.empty() ? get<1>(cadastroAtual) : tempTelefone;
     string bairroFinal = tempBairro.empty() ? get<0>(get<2>(cadastroAtual)) : tempBairro;
@@ -144,8 +138,7 @@ bool editarCliente(tuple<string, string, tuple<string, string, string, string>> 
 
     limpatela();
 
-    cout << "Revisão dos dados: " << endl
-         << endl;
+    cout << "Revisão dos dados: " << endl << endl;
     cout << "Nome: " << nomeFinal << endl;
     cout << "Telefone: " << telefoneFinal << endl;
     cout << "Bairro: " << bairroFinal << endl;
@@ -154,8 +147,7 @@ bool editarCliente(tuple<string, string, tuple<string, string, string, string>> 
     cout << "Complemento: " << complementoFinal << endl;
 
     string confirma;
-    cout << endl
-         << "Os dados estão corretos? (s/n): ";
+    cout << endl << "Os dados estão corretos? (s/n): ";
     getline(cin, confirma);
 
     if (confirma != "s")
@@ -165,18 +157,16 @@ bool editarCliente(tuple<string, string, tuple<string, string, string, string>> 
         return false;
     }
 
-    // Exclui cliente antigo com base no telefone
     if (!excluirCliente(telefoneAntigo))
     {
         cout << "Erro ao excluir cadastro antigo." << endl;
         return false;
     }
 
-    // Cria novo cliente e adiciona ao vetor
-    cliente clienteAtualizado(nomeFinal, telefoneFinal, make_tuple(bairroFinal, ruaFinal, numeroFinal, complementoFinal));
+    cliente clienteAtualizado(nomeFinal, telefoneFinal,
+                              make_tuple(bairroFinal, ruaFinal, numeroFinal, complementoFinal));
     listaClientes.push_back(clienteAtualizado);
 
-    // Salva cliente individual
     ofstream fileCliente("clientes/" + nomeFinal + ".txt");
     if (fileCliente.is_open())
     {
@@ -194,7 +184,6 @@ bool editarCliente(tuple<string, string, tuple<string, string, string, string>> 
         return false;
     }
 
-    // Reescreve o arquivo de lista completa
     ofstream fileLista("listas/listaClientes.txt");
     if (fileLista.is_open())
     {

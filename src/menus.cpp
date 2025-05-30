@@ -14,6 +14,7 @@ int menuPedidos()
              << "2. Mostrar Pedido" << endl
              << "3. Reimprimir Pedido" << endl
              << "4. Cancelar Pedido" << endl
+             << "5. Editar Pedido" << endl
              << "0. Voltar ao Menu Principal" << endl
              << "------------------------------" << endl
              << "Escolha uma opcao: ";
@@ -22,7 +23,7 @@ int menuPedidos()
 
         limpatela();
 
-        if (cin.fail() || op > 4 && op != 0)
+        if (cin.fail() || op > 5 && op != 0)
         {
             cout << "Opcao invalida, tente novamente..." << endl;
             cin.clear();
@@ -30,7 +31,7 @@ int menuPedidos()
             op = static_cast<size_t>(-1);
         }
 
-    } while (op < 0 || op > 4);
+    } while (op < 0 || op > 5);
 
     return op;
 }
