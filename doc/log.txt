@@ -74,6 +74,6 @@ v2.0.1-2505235
 // criado funcoes para backups
 
 v2.0.2-250530
-// adicionado função editarCliente
+// adicionado função editarPedido
 // coloquei chave nos cases pra poder fechar no vscode
 // quem que usa yy/mm/dd vei
