@@ -75,4 +75,5 @@ v2.0.1-2505235
 
 v2.0.2-250530
 // adicionado função editarCliente
-//coloquei chave nos cases pra poder fechar no vscode
+// coloquei chave nos cases pra poder fechar no vscode
+// quem que usa yy/mm/dd vei
