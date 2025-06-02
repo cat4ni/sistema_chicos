@@ -306,7 +306,6 @@ int main()
 
                     break;
                 case 0:
-                    main();
                     break;
                 }
 
@@ -486,7 +485,6 @@ int main()
                 break;
 
                 case 0:
-                    main();
                     break;
                 }
 
